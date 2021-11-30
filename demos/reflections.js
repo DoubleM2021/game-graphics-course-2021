@@ -3,7 +3,7 @@
 import PicoGL from "../node_modules/picogl/build/module/picogl.js";
 import {mat4, vec3, mat3, vec4, vec2} from "../node_modules/gl-matrix/esm/index.js";
 
-import {positions, normals, indices} from "../blender/cube.js"
+import {positions, normals, indices} from "../blender/torus.js"
 import {positions as mirrorPositions, uvs as mirrorUvs, indices as mirrorIndices} from "../blender/plane.js"
 
 let skyboxPositions = new Float32Array([
@@ -85,7 +85,7 @@ let mirrorFragmentShader = `
         vec2 screenPos = gl_FragCoord.xy / screenSize;
         
         // 0.03 is a mirror distortion factor, try making a larger distortion         
-        screenPos.x += (texture(distortionMap, vUv).r - 0.5) * 0.03;
+        screenPos.x += (texture(distortionMap, vUv).r - 0.7) * 0.07;
         outColor = texture(reflectionTex, screenPos);
     }
 `;
@@ -182,20 +182,20 @@ function calculateSurfaceReflectionMatrix(reflectionMat, mirrorModelMatrix, surf
     let d = -vec3.dot(normal, pos);
     let plane = vec4.fromValues(normal[0], normal[1], normal[2], d);
 
-    reflectionMat[0] = (1 - 2 * plane[0] * plane[0]);
-    reflectionMat[4] = ( - 2 * plane[0] * plane[1]);
-    reflectionMat[8] = ( - 2 * plane[0] * plane[2]);
-    reflectionMat[12] = ( - 2 * plane[3] * plane[0]);
+    reflectionMat[0] = (1 - 3 * plane[0] * plane[0]);
+    reflectionMat[4] = ( - 3 * plane[0] * plane[1]);
+    reflectionMat[8] = ( - 3 * plane[0] * plane[2]);
+    reflectionMat[12] = ( - 3 * plane[3] * plane[0]);
 
-    reflectionMat[1] = ( - 2 * plane[1] * plane[0]);
-    reflectionMat[5] = (1 - 2 * plane[1] * plane[1]);
-    reflectionMat[9] = ( - 2 * plane[1] * plane[2]);
-    reflectionMat[13] = ( - 2 * plane[3] * plane[1]);
+    reflectionMat[1] = ( - 3 * plane[1] * plane[0]);
+    reflectionMat[5] = (1 - 3 * plane[1] * plane[1]);
+    reflectionMat[9] = ( - 3 * plane[1] * plane[2]);
+    reflectionMat[13] = ( - 3 * plane[3] * plane[1]);
 
-    reflectionMat[2] = ( - 2 * plane[2] * plane[0]);
-    reflectionMat[6] = ( - 2 * plane[2] * plane[1]);
-    reflectionMat[10] = (1 - 2 * plane[2] * plane[2]);
-    reflectionMat[14] = ( - 2 * plane[3] * plane[2]);
+    reflectionMat[2] = ( - 3 * plane[2] * plane[0]);
+    reflectionMat[6] = ( - 3 * plane[2] * plane[1]);
+    reflectionMat[10] = (1 - 3 * plane[2] * plane[2]);
+    reflectionMat[14] = ( - 3 * plane[3] * plane[2]);
 
     reflectionMat[3] = 0;
     reflectionMat[7] = 0;
@@ -284,7 +284,7 @@ async function loadTexture(fileName) {
     }
 
     function draw() {
-        let time = new Date().getTime() * 0.001;
+        let time = new Date().getTime() *0.005;
 
         mat4.perspective(projMatrix, Math.PI / 2.5, app.width / app.height, 0.1, 100.0);
         vec3.rotateY(cameraPosition, vec3.fromValues(0, 3, 3.5), vec3.fromValues(0, 0, 0), time * 0.05);
