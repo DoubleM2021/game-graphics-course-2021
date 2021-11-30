@@ -47,6 +47,8 @@
         <script type="module">
             import PicoGL from "./node_modules/picogl/build/module/picogl.js";
 
+            window.midi = [];
+
             const loadScript = window.location.search.substring(1);
             if (loadScript && loadScript.endsWith(".js")) {
                 document.getElementById("menu").style.display = "none";
@@ -63,7 +65,24 @@
                     app.resize(window.innerWidth * devicePixelRatio, window.innerHeight * devicePixelRatio);
                 });
 
-                import(loadScript);
+                await import(loadScript);
+            }
+
+            window.midiAccess = await navigator.requestMIDIAccess();
+            if (midiAccess.outputs.size) {
+                window.midiOutput = midiAccess.outputs.values().next().value;
+                for (let i = 0; i <= midi.length; i++) {
+                    midiOutput.send([186, i, Number(midi[i]) * 127]);
+                }
+            }
+            if (midiAccess.inputs.size) {
+                window.midiInput = midiAccess.inputs.values().next().value;
+                midiInput.onmidimessage = (message) => {
+                    // controller changed
+                    if (message.data[0] === 186) {
+                        midi[message.data[1]] = message.data[2] / 127;
+                    }
+                }
             }
         </script>
         <div id="menu">
@@ -103,11 +122,13 @@
                 <a target="_blank" href="https://docs.google.com/presentation/d/1DUjt1nVzONqGic8JVWbl5YDb38m4Br6N25jDEqYhnec/edit?usp=sharing">05 Lighting</a>
                 <a target="_blank" href="https://docs.google.com/presentation/d/14cvtBezVu19ML_A-bSB2JqLSB5f0k7NPngMh8GP8izw/edit?usp=sharing">06 Reflections</a>
                 <a target="_blank" href="https://docs.google.com/presentation/d/1BJqZFeQG8KTV419adKMNsWfbN7YMNz7NvXVIiQHB4E8/edit?usp=sharing">07 Shadows</a>
+                <a target="_blank" href="https://docs.google.com/presentation/d/1gDXbiyd3RgD8wd1ybb54mcxdZh-Rk_6hAyB8xfMLpUc/edit?usp=sharing">08 Post-processing</a>
             </p>
             <h2>Tests</h2>
             <p>
                 <a target="_blank" href="https://create.kahoot.it/details/ed987b4b-58dc-404b-aef7-610f8598c45d">02 Rendering</a>
                 <a target="_blank" href="https://create.kahoot.it/details/1da49f06-f4f9-4412-be68-a65de97b5731">03-04 GPU,Rendering</a>
+                <a target="_blank" href="https://create.kahoot.it/details/09fda743-b6d3-4d77-86df-40fd888cf3b6">05-06 Lighting,Reflections</a>
             </p>
             <h2>Demos</h2>
             <p>
@@ -116,6 +137,7 @@
                 <a href="?./demos/lighting.js">05 Lighting</a>
                 <a href="?./demos/reflections.js">06 Reflections</a>
                 <a href="?./demos/shadows.js">07 Shadows</a>
+                <a href="?./demos/post-processing.js">08 Post-processing</a>
             </p>
         </div>
     </body>

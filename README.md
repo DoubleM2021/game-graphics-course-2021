@@ -34,7 +34,7 @@ This repository contains a webpage, which should be checked out and deployed on 
 
 ## Home Assignments
 
-1. Before start, make sure you successfully completed all steps of [Setup Instructions](#setup) below
+1. Before start, make sure you successfully completed all steps of [Setup Instructions](#setup) above
 2. (Skip first time) Merge the latest changes into your forked repository, using GitHub Desktop 
     1. Fetch Origin
     2. Branch -> Merge info current -> upstream/master
