@@ -13,7 +13,7 @@
 import PicoGL from "../node_modules/picogl/build/module/picogl.js";
 import {mat4, vec3} from "../node_modules/gl-matrix/esm/index.js";
 
-import {positions, normals, uvs, indices} from "../blender/torus.js"
+import {positions, normals, uvs, indices} from "../blender/cube.js"
 
 const skyboxPositions = new Float32Array([
     -1.0, 1.0, 1.0,
@@ -59,7 +59,7 @@ let vertexShader = `
     
     void main()
     {
-        gl_Position = modelViewProjectionMatrix * vec4(position, 2.5);           
+        gl_Position = modelViewProjectionMatrix * vec4(position, 1.5);           
         v_uv = uv;
     }
 `;
@@ -78,7 +78,7 @@ let skyboxFragmentShader = `
     
     void main() {
       vec4 t = viewProjectionInverse * v_position;
-      outColor = texture(cubemap, normalize(t.xyz / t.w));
+      outColor = texture(cubemap, normalize(t.xyz / t.w))* vec4(.5, .3, .2, 1);
     }
 `;
 
@@ -125,7 +125,7 @@ async function loadTexture(fileName) {
 }
 
 (async () => {
-    const tex = await loadTexture("abstract.jpg");
+    const tex = await loadTexture("lava.jpg");
     let drawCall = app.createDrawCall(program, vertexArray)
         .texture("tex", app.createTexture2D(tex, tex.width, tex.height, {
             magFilter: PicoGL.LINEAR,

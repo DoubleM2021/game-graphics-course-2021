@@ -1,0 +1,33 @@
+newmtl Default
+Kd 0.784314 0.784314 0.784314
+Ke 0 0 0
+Ka 1 1 1
+Ks 0 0 0
+Ns 400
+Tr 0
+d 1
+Ni 1
+Tf 1 1 1
+
+newmtl HELMET
+Kd 0.4 0.4 0.4
+Ke 0 0 0
+Ka 1 1 1
+Ks 1 1 1
+Ns 1000
+Tr 0
+d 1
+Ni 1
+Tf 1 1 1
+
+newmtl HELMET22
+Kd 0.843137 0.843137 0.843137
+Ke 0 0 0
+Ka 1 1 1
+Ks 0.09 0.09 0.09
+Ns 1000
+Tr 0
+d 1
+Ni 1
+Tf 1 1 1
+

@@ -3,7 +3,7 @@
 import PicoGL from "../node_modules/picogl/build/module/picogl.js";
 import {mat4, vec3, mat3, vec4, vec2} from "../node_modules/gl-matrix/esm/index.js";
 
-import {positions, normals, indices} from "../blender/torus.js"
+import {positions, normals, indices} from "../blender/magnetto.js"
 import {positions as mirrorPositions, uvs as mirrorUvs, indices as mirrorIndices} from "../blender/plane.js"
 
 let skyboxPositions = new Float32Array([
