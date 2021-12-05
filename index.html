@@ -69,19 +69,11 @@
             }
 
             window.midiAccess = await navigator.requestMIDIAccess();
-            if (midiAccess.outputs.size) {
-                window.midiOutput = midiAccess.outputs.values().next().value;
-                for (let i = 0; i <= midi.length; i++) {
-                    midiOutput.send([186, i, Number(midi[i]) * 127]);
-                }
-            }
-            if (midiAccess.inputs.size) {
-                window.midiInput = midiAccess.inputs.values().next().value;
-                midiInput.onmidimessage = (message) => {
-                    // controller changed
-                    if (message.data[0] === 186) {
+            for (const input of midiAccess.inputs.values()) {
+                input.onmidimessage = (message) => {
+                    // controller changed message https://www.midi.org/specifications-old/item/table-1-summary-of-midi-message
+                    if ((message.data[0] & 0xb0) === 0xb0)
                         midi[message.data[1]] = message.data[2] / 127;
-                    }
                 }
             }
         </script>
