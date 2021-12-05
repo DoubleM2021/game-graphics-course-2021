@@ -3,7 +3,7 @@
 import PicoGL from "../node_modules/picogl/build/module/picogl.js";
 import {mat4, vec3, vec4, quat} from "../node_modules/gl-matrix/esm/index.js";
 
-import {positions, normals, indices} from "../blender/cube.js"
+import {positions, normals, indices} from "../blender/cranium.js"
 
 // language=GLSL
 let fragmentShader = `
@@ -24,7 +24,7 @@ let fragmentShader = `
     out vec4 fragColor;
     
     void main() {
-        vec3 shadowCoord = (vPositionFromLight.xyz / vPositionFromLight.w) / 2.0 + 0.5;        
+        vec3 shadowCoord = (vPositionFromLight.xyz / vPositionFromLight.w) / 5.0 + 3.5;        
         float shadow = texture(shadowMap, shadowCoord);
         
         vec3 normal = normalize(vNormal);
