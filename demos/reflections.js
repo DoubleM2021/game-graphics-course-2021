@@ -3,7 +3,7 @@
 import PicoGL from "../node_modules/picogl/build/module/picogl.js";
 import {mat4, vec3, mat3, vec4, vec2} from "../node_modules/gl-matrix/esm/index.js";
 
-import {positions, normals, indices} from "../blender/magnetto.js"
+import {positions, normals, indices} from "../blender/skull.js"
 import {positions as mirrorPositions, uvs as mirrorUvs, indices as mirrorIndices} from "../blender/plane.js"
 
 let skyboxPositions = new Float32Array([
@@ -37,7 +37,7 @@ let fragmentShader = `
         outColor = texture(cubemap, reflectedDir);
         
         // Try using a higher mipmap LOD to get a rough material effect without any performance impact
-        //outColor = textureLod(cubemap, reflectedDir, 7.0);
+        outColor = textureLod(cubemap, reflectedDir, 7.0);
     }
 `;
 
@@ -158,7 +158,7 @@ let mirrorArray = app.createVertexArray()
     .indexBuffer(app.createIndexBuffer(PicoGL.UNSIGNED_INT, 3, mirrorIndices));
 
 // Change the reflection texture resolution to checkout the difference
-let reflectionResolutionFactor = 0.3;
+let reflectionResolutionFactor = 0.9;
 let reflectionColorTarget = app.createTexture2D(app.width * reflectionResolutionFactor, app.height * reflectionResolutionFactor, {magFilter: PicoGL.LINEAR});
 let reflectionDepthTarget = app.createTexture2D(app.width * reflectionResolutionFactor, app.height * reflectionResolutionFactor, {internalFormat: PicoGL.DEPTH_COMPONENT16});
 let reflectionBuffer = app.createFramebuffer().colorTarget(0, reflectionColorTarget).depthTarget(reflectionDepthTarget);
@@ -287,15 +287,15 @@ async function loadTexture(fileName) {
         let time = new Date().getTime() *0.005;
 
         mat4.perspective(projMatrix, Math.PI / 2.5, app.width / app.height, 0.1, 100.0);
-        vec3.rotateY(cameraPosition, vec3.fromValues(0, 3, 3.5), vec3.fromValues(0, 0, 0), time * 0.05);
-        mat4.lookAt(viewMatrix, cameraPosition, vec3.fromValues(0, -0.5, 0), vec3.fromValues(0, 1, 0));
+        vec3.rotateY(cameraPosition, vec3.fromValues(4, 3, 3.5), vec3.fromValues(0, 0, 0), time * 0.05);
+        mat4.lookAt(viewMatrix, cameraPosition, vec3.fromValues(1, -0.5, 0), vec3.fromValues(0, 1, 0));
 
-        mat4.fromXRotation(rotateXMatrix, time * 0.1136 - Math.PI / 2);
-        mat4.fromZRotation(rotateYMatrix, time * 0.2235);
+        mat4.fromXRotation(rotateXMatrix, time * 0.1136 - Math.PI / 4);
+        mat4.fromZRotation(rotateYMatrix, time * 0.15);
         mat4.mul(modelMatrix, rotateXMatrix, rotateYMatrix);
 
-        mat4.fromXRotation(rotateXMatrix, 0.3);
-        mat4.fromYRotation(rotateYMatrix, time * 0.2354);
+        mat4.fromXRotation(rotateXMatrix, -0.1);
+        mat4.fromYRotation(rotateYMatrix, time * 0.1);
         mat4.mul(mirrorModelMatrix, rotateYMatrix, rotateXMatrix);
         mat4.translate(mirrorModelMatrix, mirrorModelMatrix, vec3.fromValues(0, -1, 0));
 

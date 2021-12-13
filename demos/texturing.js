@@ -13,7 +13,7 @@
 import PicoGL from "../node_modules/picogl/build/module/picogl.js";
 import {mat4, vec3} from "../node_modules/gl-matrix/esm/index.js";
 
-import {positions, normals, uvs, indices} from "../blender/sphere.js"
+import {positions, normals, uvs, indices} from "../blender/cranium.js"
 
 const skyboxPositions = new Float32Array([
     -1.0, 1.0, 1.0,
@@ -125,7 +125,7 @@ async function loadTexture(fileName) {
 }
 
 (async () => {
-    const tex = await loadTexture("lava.jpg");
+    const tex = await loadTexture("checkerboard.png");
     let drawCall = app.createDrawCall(program, vertexArray)
         .texture("tex", app.createTexture2D(tex, tex.width, tex.height, {
             magFilter: PicoGL.LINEAR,

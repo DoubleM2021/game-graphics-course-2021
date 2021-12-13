@@ -112,7 +112,7 @@ let drawCall = app.createDrawCall(program, vertexArray)
 
 let startTime = new Date().getTime() / 1000;
 
-let cameraPosition = vec3.fromValues(0, 0, 5);
+let cameraPosition = vec3.fromValues(2, 0, 5);
 mat4.fromXRotation(modelMatrix, -Math.PI / 2);
 
 const positionsBuffer = new Float32Array(numberOfLights * 3);
